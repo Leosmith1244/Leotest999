@@ -1,0 +1,116 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[CLUB_NAME] Toastmasters - Meetings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">[CLUB_NAME] Toastmasters</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="meetings.html">Meetings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="membership.html">Membership</a></li>
+                    <li class="nav-item"><a class="nav-link" href="leadership.html">Leadership</a></li>
+                    <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="guest.html">Guest Info</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="container my-5">
+        <h2 class="text-center">Meeting Schedule</h2>
+        <p><strong>When:</strong> Every [MEETING_DAY], [TIME]</p>
+        <p><strong>Where:</strong> [LOCATION], [CITY] ([IN_PERSON/HYBRID/ONLINE])</p>
+        <p><strong>Virtual Link:</strong> <a href="[ZOOM_LINK]">Join via Zoom</a> (Contact us for passcode)</p>
+    </section>
+
+    <section class="container my-5">
+        <h2 class="text-center">Meeting Format</h2>
+        <ul>
+            <li><strong>Welcome & Introductions:</strong> Toastmaster of the Day opens the meeting (5 min)</li>
+            <li><strong>Prepared Speeches:</strong> 2-3 members deliver speeches (20 min)</li>
+            <li><strong>Table Topics:</strong> Impromptu speaking session (15 min)</li>
+            <li><strong>Evaluations:</strong> Feedback for speakers (10 min)</li>
+            <li><strong>Reports:</strong> Timer, Grammarian, Ah-Counter share insights (10 min)</li>
+            <li><strong>Closing:</strong> Announcements and adjournment (10 min)</li>
+        </ul>
+    </section>
+
+    <section class="container my-5">
+        <h2 class="text-center">Sample Agenda</h2>
+        <p><strong>Date:</strong> [MEETING_DAY], [SAMPLE_DATE]</p>
+        <p><strong>Theme:</strong> [SAMPLE_THEME]</p>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>[START_TIME] - Welcome</strong> (Toastmaster: [NAME])</li>
+            <li class="list-group-item"><strong>[TIME] - Introductions</strong> (5 min)</li>
+            <li class="list-group-item"><strong>[TIME] - Prepared Speeches</strong> (20 min)</li>
+            <li class="list-group-item"><strong>[TIME] - Table Topics</strong> (15 min)</li>
+            <li class="list-group-item"><strong>[TIME] - Evaluations</strong> (10 min)</li>
+            <li class="list-group-item"><strong>[TIME] - Reports</strong> (10 min)</li>
+            <li class="list-group-item"><strong>[TIME] - General Evaluator</strong> (5 min)</li>
+            <li class="list-group-item"><strong>[TIME] - Announcements & Closing</strong> (10 min)</li>
+        </ul>
+        <p class="mt-3">Sign up for a role on our <a href="membership.html">Membership</a> page!</p>
+    </section>
+
+    <footer class="text-white text-center py-3">
+        <p>&copy; [CURRENT_YEAR] [CLUB_NAME] Toastmasters. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+:root {
+    --maroon: #772432;
+    --blue: #004165;
+    --gray: #A9B2B1;
+    --yellow: #F2DF74;
+    --white: #FFFFFF;
+    --black: #000000;
+}
+
+body {
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    color: var(--black);
+    background-color: var(--white);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--blue);
+}
+
+header {
+    background: linear-gradient(45deg, var(--blue), var(--maroon));
+    color: var(--white);
+}
+
+.navbar {
+    background-color: var(--white);
+}
+
+.navbar-brand {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: var(--maroon);
+}
+
+.nav-link {
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    color: var(--black);
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--maroon);
+}
+
+.btn-primary {
+    background-color: var(--blue);
+    border-color: var(--blue);
+    font-family: 'Source Sans 3', Arial, sans-serif;
+}
+
+.btn-primary:hover {
+    background-color: var(--maroon);
+    border-color: var(--maroon);
+}
+
+.btn-outline-light {
+    border-color: var(--white);
+    color: var(--white);
+}
+
+.btn-outline-light:hover {
+    background-color: var(--yellow);
+    color: var(--black);
+}
+
+section {
+    min-height: 400px;
+    padding: 20px 0;
+}
+
+footer {
+    background-color: var(--blue);
+    color: var(--white);
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.card {
+    border-color: var(--gray);
+}
+
+.card-title {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--blue);
+}
+
+.card-text {
+    color: var(--black);
+}
+
+a {
+    color: var(--blue);
+}
+
+a:hover {
+    color: var(--maroon);
+}
+
+.list-group-item {
+    border-color: var(--gray);
+}
+
+.accordion-button {
+    font-family: 'Source Sans 3', Arial, sans-serif;
+    color: var(--blue);
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: var(--yellow);
+    color: var(--black);
+}
