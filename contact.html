@@ -1,56 +1,22 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wordsmiths Toastmasters - Contact</title>
+    <title>Contact Us - [CLUB_NAME] Toastmasters</title>
+    <meta name="description" content="Get in touch with [CLUB_NAME] Toastmasters - visit us at a meeting, send a message, or connect on social media.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Wordsmiths Toastmasters</a>
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-comments me-2"></i>[CLUB_NAME] Toastmasters
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -64,52 +30,241 @@
                     <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
                     <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
                     <li class="nav-item"><a class="nav-link active" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="guest.html">Guest Info</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section class="container my-5">
-        <h2 class="text-center">Contact Us</h2>
-        <p><strong>Email:</strong> info@wordsmithstm.org</p>
-        <form action="https://formspree.io/f/your-form-id" method="POST" class="col-md-6 mx-auto">
-            <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+    <header class="text-white text-center" style="background-image: linear-gradient(rgba(0, 65, 101, 0.8), rgba(119, 36, 50, 0.8)), url('https://images.unsplash.com/photo-1521791055366-0d553872125f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Contact Us</h1>
+            <p class="lead mb-5">We'd love to hear from you! Reach out with questions or visit a meeting.</p>
+        </div>
+    </header>
+
+    <section class="section-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="text-center mb-5">Send Us a Message</h2>
+                    
+                    <form action="https://formspree.io/f/your-form-id" method="POST" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                                <div class="invalid-feedback">
+                                    Please provide your name.
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid email.
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="subject" class="form-label">Subject</label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="" selected disabled>Select a subject</option>
+                                    <option value="Membership Inquiry">Membership Inquiry</option>
+                                    <option value="Guest Questions">Guest Questions</option>
+                                    <option value="Meeting Information">Meeting Information</option>
+                                    <option value="Leadership Opportunities">Leadership Opportunities</option>
+                                    <option value="Speaking Engagement">Speaking Engagement</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Please select a subject.
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                                <div class="invalid-feedback">
+                                    Please enter your message.
+                                </div>
+                            </div>
+                            
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="newsletter" name="newsletter">
+                                    <label class="form-check-label" for="newsletter">
+                                        Subscribe to our newsletter for club updates and tips
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="col-12 text-center mt-4">
+                                <button class="btn btn-primary btn-lg" type="submit">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            <div class="mb-3">
-                <label for="message" class="form-label">Message</label>
-                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary">Send</button>
-        </form>
+        </div>
     </section>
 
-    <section class="container my-5">
-        <h2 class="text-center">Follow Us</h2>
-        <p>
-            <a href="https://facebook.com/wordsmithstm" target="_blank">Facebook</a> |
-            <a href="https://twitter.com/wordsmithstm" target="_blank">Twitter</a> |
-            <a href="https://linkedin.com/company/wordsmithstm" target="_blank">LinkedIn</a>
-        </p>
+    <section class="section-blue">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h2 class="mb-4">Meeting Information</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="h5"><i class="fas fa-calendar-alt me-2 text-blue"></i>When We Meet</h3>
+                            <p>Every [MEETING_DAY] at [TIME]<br>
+                            Guests are always welcome!</p>
+                            
+                            <h3 class="h5 mt-4"><i class="fas fa-map-marker-alt me-2 text-blue"></i>Location</h3>
+                            <p>[LOCATION_NAME]<br>
+                            [STREET_ADDRESS]<br>
+                            [CITY, STATE ZIP]</p>
+                            
+                            <h3 class="h5 mt-4"><i class="fas fa-video me-2 text-blue"></i>Virtual Option</h3>
+                            <p>Join via <a href="[ZOOM_LINK]">Zoom</a><br>
+                            Meeting ID: [MEETING_ID]<br>
+                            Passcode: [PASSCODE]</p>
+                            
+                            <a href="guest.html" class="btn btn-primary mt-3">Guest Information</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <h2 class="mb-4">Connect With Us</h2>
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="h5"><i class="fas fa-envelope me-2 text-blue"></i>Email</h3>
+                            <p>General Inquiries: <a href="mailto:info@clubname.org">info@clubname.org</a><br>
+                            VP Membership: <a href="mailto:membership@clubname.org">membership@clubname.org</a></p>
+                            
+                            <h3 class="h5 mt-4"><i class="fas fa-phone me-2 text-blue"></i>Phone</h3>
+                            <p>Club Voicemail: [PHONE_NUMBER]</p>
+                            
+                            <h3 class="h5 mt-4"><i class="fas fa-hashtag me-2 text-blue"></i>Social Media</h3>
+                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                <a href="https://facebook.com/clubname" class="btn btn-outline-primary" target="_blank">
+                                    <i class="fab fa-facebook-f me-1"></i> Facebook
+                                </a>
+                                <a href="https://twitter.com/clubname" class="btn btn-outline-primary" target="_blank">
+                                    <i class="fab fa-twitter me-1"></i> Twitter
+                                </a>
+                                <a href="https://linkedin.com/company/clubname" class="btn btn-outline-primary" target="_blank">
+                                    <i class="fab fa-linkedin-in me-1"></i> LinkedIn
+                                </a>
+                                <a href="https://meetup.com/clubname" class="btn btn-outline-primary" target="_blank">
+                                    <i class="fab fa-meetup me-1"></i> Meetup
+                                </a>
+                            </div>
+                            
+                            <h3 class="h5 mt-4"><i class="fas fa-qrcode me-2 text-blue"></i>Club QR Code</h3>
+                            <img src="images/qr-code.png" alt="Club QR Code" class="img-fluid" style="max-width: 150px;">
+                            <p class="small text-muted mt-2">Scan to save our contact info</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="container my-5">
-        <h2 class="text-center">Meeting Location</h2>
-        <p>Community Center, 123 Main St, Your City</p>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.086!2d-122.419415684681!3d37.774929779759!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzfCsDU2JzI5LjciTiAxMjLCsDI1JzA5LjkiVw!5e0!3m2!1sen!2sus!4v1630000000000" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <section>
+        <div class="container">
+            <h2 class="text-center mb-4">Find Us on the Map</h2>
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215256836197!2d-73.98784468459382!3d40.74844017932789!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDQ0JzU0LjQiTiA3M8KwNTknMDkuOSJX!5e0!3m2!1sen!2sus!4v1630000000000" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
     </section>
 
-    <footer class="text-white text-center py-3">
-        <p>&copy; 2025 Wordsmiths Toastmasters. All rights reserved.</p>
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="text-white mb-4">Ready to Visit a Meeting?</h2>
+                    <p class="lead text-white mb-5">Join us as a guest to experience our club culture and see how Toastmasters can help you grow.</p>
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a href="meetings.html" class="btn btn-primary btn-lg px-4 gap-3">
+                            <i class="fas fa-calendar-alt me-2"></i>View Meeting Schedule
+                        </a>
+                        <a href="guest.html" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-user-friends me-2"></i>Guest Information
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><i class="fas fa-comments me-2"></i>[CLUB_NAME] Toastmasters</h5>
+                    <p>Empowering confident communicators and leaders since [FOUNDING_YEAR].</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="meetings.html" class="text-white">Meeting Schedule</a></li>
+                        <li><a href="membership.html" class="text-white">How to Join</a></li>
+                        <li><a href="resources.html" class="text-white">Member Resources</a></li>
+                        <li><a href="leadership.html" class="text-white">Club Leadership</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="mb-3">
+                        <a href="https://facebook.com" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="https://linkedin.com" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://meetup.com" class="social-icon"><i class="fab fa-meetup"></i></a>
+                    </div>
+                    <p>
+                        <i class="fas fa-envelope me-2"></i>info@clubname.org<br>
+                        <i class="fas fa-map-marker-alt me-2"></i>[LOCATION]
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; [CURRENT_YEAR] [CLUB_NAME] Toastmasters. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">
+                        <a href="https://www.toastmasters.org" class="text-white">Toastmasters International</a> | 
+                        <a href="privacy.html" class="text-white">Privacy Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form validation
+        (function () {
+            'use strict'
+            
+            var forms = document.querySelectorAll('.needs-validation')
+            
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
 </body>
 </html>

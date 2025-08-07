@@ -1,56 +1,22 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[CLUB_NAME] Toastmasters - Blog</title>
+    <title>Club Blog - [CLUB_NAME] Toastmasters</title>
+    <meta name="description" content="Read the latest news, meeting recaps, and member stories from [CLUB_NAME] Toastmasters.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">[CLUB_NAME] Toastmasters</a>
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-comments me-2"></i>[CLUB_NAME] Toastmasters
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -64,27 +30,209 @@
                     <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
                     <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="guest.html">Guest Info</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section class="container my-5">
-        <h2 class="text-center">Blog & News</h2>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">[BLOG_TITLE]</h5>
-                <p class="card-text">Posted on [POST_DATE]</p>
-                <p class="card-text">[CLUB_NAME] hosted an exciting meeting with a unique theme. Congratulations to [MEMBER_NAME] for an outstanding performance!</p>
-                <a href="blog-post-1.html" class="btn btn-primary">Read More</a>
+    <header class="text-white text-center" style="background-image: linear-gradient(rgba(0, 65, 101, 0.8), rgba(119, 36, 50, 0.8)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Club Blog</h1>
+            <p class="lead mb-5">News, stories, and insights from our Toastmasters community</p>
+        </div>
+    </header>
+
+    <section class="section-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Featured Post -->
+                    <div class="card mb-5 border-0 shadow">
+                        <img src="https://images.unsplash.com/photo-1541178735493-479c1a27ed24?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" class="card-img-top" alt="Featured Post">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <span class="badge bg-blue me-2">Featured</span>
+                                <small class="text-muted"><i class="far fa-calendar-alt me-1"></i> June 15, 2023</small>
+                            </div>
+                            <h2 class="card-title">[CLUB_NAME] Wins Area Speech Contest</h2>
+                            <p class="card-text">Our club members showcased exceptional speaking skills at the recent Area 14 Speech Contest, with [MEMBER_NAME] taking first place in the International Speech category and [MEMBER_NAME] winning the Evaluation contest.</p>
+                            <a href="blog-post-1.html" class="btn btn-primary">Read More</a>
+                        </div>
+                    </div>
+
+                    <!-- Blog Post List -->
+                    <div class="row g-4">
+                        <!-- Post 1 -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1524179091875-bf99a9a6af57?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Meeting Recap">
+                                <div class="card-body">
+                                    <small class="text-muted"><i class="far fa-calendar-alt me-1"></i> June 8, 2023</small>
+                                    <h3 class="h5 card-title">Meeting Recap: "The Power of Storytelling"</h3>
+                                    <p class="card-text">Our June 7th meeting focused on storytelling techniques, with three members delivering compelling narratives that captivated the audience.</p>
+                                    <a href="blog-post-2.html" class="btn btn-sm btn-outline-primary">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Post 2 -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Member Spotlight">
+                                <div class="card-body">
+                                    <small class="text-muted"><i class="far fa-calendar-alt me-1"></i> May 25, 2023</small>
+                                    <h3 class="h5 card-title">Member Spotlight: [MEMBER_NAME]'s Toastmasters Journey</h3>
+                                    <p class="card-text">From nervous newcomer to confident communicator, learn how [MEMBER_NAME] transformed through their Toastmasters experience.</p>
+                                    <a href="blog-post-3.html" class="btn btn-sm btn-outline-primary">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Post 3 -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Leadership">
+                                <div class="card-body">
+                                    <small class="text-muted"><i class="far fa-calendar-alt me-1"></i> May 12, 2023</small>
+                                    <h3 class="h5 card-title">5 Leadership Lessons From Our Club Officers</h3>
+                                    <p class="card-text">Current and past club officers share their most valuable leadership takeaways from serving in Toastmasters roles.</p>
+                                    <a href="blog-post-4.html" class="btn btn-sm btn-outline-primary">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Post 4 -->
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Tips">
+                                <div class="card-body">
+                                    <small class="text-muted"><i class="far fa-calendar-alt me-1"></i> April 28, 2023</small>
+                                    <h3 class="h5 card-title">10 Tips for Overcoming Public Speaking Anxiety</h3>
+                                    <p class="card-text">Members share their most effective strategies for managing nervousness and building confidence at the podium.</p>
+                                    <a href="blog-post-5.html" class="btn btn-sm btn-outline-primary">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagination -->
+                    <nav aria-label="Blog navigation" class="mt-5">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+
+                <!-- Sidebar -->
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">Categories</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Meeting Recaps
+                                    <span class="badge bg-blue rounded-pill">12</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Member Stories
+                                    <span class="badge bg-blue rounded-pill">8</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Public Speaking Tips
+                                    <span class="badge bg-blue rounded-pill">15</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Leadership Insights
+                                    <span class="badge bg-blue rounded-pill">7</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Club Announcements
+                                    <span class="badge bg-blue rounded-pill">5</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">Popular Posts</h3>
+                            <div class="list-group list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action">How I Overcame My Fear of Public Speaking</a>
+                                <a href="#" class="list-group-item list-group-item-action">The Secret to Effective Evaluations</a>
+                                <a href="#" class="list-group-item list-group-item-action">5 Table Topics Strategies That Work</a>
+                                <a href="#" class="list-group-item list-group-item-action">From Club Member to District Leader</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="h5 card-title">Subscribe</h3>
+                            <p>Get our latest posts delivered to your inbox</p>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Your email address">
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="text-white text-center py-3">
-        <p>&copy; [CURRENT_YEAR] [CLUB_NAME] Toastmasters. All rights reserved.</p>
+    <footer class="text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><i class="fas fa-comments me-2"></i>[CLUB_NAME] Toastmasters</h5>
+                    <p>Empowering confident communicators and leaders since [FOUNDING_YEAR].</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="meetings.html" class="text-white">Meeting Schedule</a></li>
+                        <li><a href="membership.html" class="text-white">How to Join</a></li>
+                        <li><a href="resources.html" class="text-white">Member Resources</a></li>
+                        <li><a href="leadership.html" class="text-white">Club Leadership</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="mb-3">
+                        <a href="https://facebook.com" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="https://linkedin.com" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://meetup.com" class="social-icon"><i class="fab fa-meetup"></i></a>
+                    </div>
+                    <p>
+                        <i class="fas fa-envelope me-2"></i>info@clubname.org<br>
+                        <i class="fas fa-map-marker-alt me-2"></i>[LOCATION]
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; [CURRENT_YEAR] [CLUB_NAME] Toastmasters. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">
+                        <a href="https://www.toastmasters.org" class="text-white">Toastmasters International</a> | 
+                        <a href="privacy.html" class="text-white">Privacy Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
