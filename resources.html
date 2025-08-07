@@ -1,56 +1,22 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[CLUB_NAME] Toastmasters - Resources</title>
+    <title>Member Resources - [CLUB_NAME] Toastmasters</title>
+    <meta name="description" content="Access valuable resources for [CLUB_NAME] Toastmasters members including Pathways guides, speech tips, and educational materials.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">[CLUB_NAME] Toastmasters</a>
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-comments me-2"></i>[CLUB_NAME] Toastmasters
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -64,42 +30,369 @@
                     <li class="nav-item"><a class="nav-link active" href="resources.html">Resources</a></li>
                     <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="guest.html">Guest Info</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section class="container my-5">
-        <h2 class="text-center">Toastmasters International Links</h2>
-        <ul>
-            <li><a href="https://www.toastmasters.org/pathways">Pathways Learning Experience</a></li>
-            <li><a href="https://www.toastmasters.org/resources">Resource Library</a></li>
-            <li><a href="https://www.toastmasters.org/magazine">Toastmaster Magazine</a></li>
-        </ul>
+    <header class="text-white text-center" style="background-image: linear-gradient(rgba(0, 65, 101, 0.8), rgba(119, 36, 50, 0.8)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Member Resources</h1>
+            <p class="lead mb-5">Tools and materials to support your Toastmasters journey</p>
+        </div>
+    </header>
+
+    <section class="section-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h2 class="text-center mb-5">Toastmasters International Resources</h2>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="role-icon text-blue">
+                                        <i class="fas fa-road"></i>
+                                    </div>
+                                    <h3 class="h5">Pathways</h3>
+                                    <p>Access the Pathways learning experience, Toastmasters' education program.</p>
+                                    <a href="https://www.toastmasters.org/pathways" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        Visit <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="role-icon text-blue">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <h3 class="h5">Resource Library</h3>
+                                    <p>Download manuals, guides, and materials for all Toastmasters programs.</p>
+                                    <a href="https://www.toastmasters.org/resources" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        Visit <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="role-icon text-blue">
+                                        <i class="fas fa-newspaper"></i>
+                                    </div>
+                                    <h3 class="h5">Toastmaster Magazine</h3>
+                                    <p>Read the latest issue and archives of the Toastmaster magazine.</p>
+                                    <a href="https://www.toastmasters.org/magazine" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        Visit <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="role-icon text-blue">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <h3 class="h5">Speech Contests</h3>
+                                    <p>Rules, resources, and tips for participating in Toastmasters contests.</p>
+                                    <a href="https://www.toastmasters.org/leadership-central/speech-contests" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        Visit <i class="fas fa-external-link-alt ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="container my-5">
-        <h2 class="text-center">Public Speaking Tips</h2>
-        <ul>
-            <li>Practice your speech multiple times to build confidence.</li>
-            <li>Use pauses to emphasize key points.</li>
-            <li>Engage the audience with eye contact and gestures.</li>
-        </ul>
+    <section class="section-blue">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h2 class="text-center mb-5">Public Speaking Resources</h2>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1544717305-2782549b5136?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Public Speaking Books">
+                                <div class="card-body">
+                                    <h3 class="h5">Recommended Books</h3>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><strong>"Talk Like TED"</strong> by Carmine Gallo</li>
+                                        <li class="mb-2"><strong>"The Art of Public Speaking"</strong> by Dale Carnegie</li>
+                                        <li class="mb-2"><strong>"Resonate"</strong> by Nancy Duarte</li>
+                                        <li class="mb-2"><strong>"Steal the Show"</strong> by Michael Port</li>
+                                        <li><strong>"Confessions of a Public Speaker"</strong> by Scott Berkun</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1551818255-e6e10975bc17?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="TED Talks">
+                                <div class="card-body">
+                                    <h3 class="h5">Recommended Videos</h3>
+                                    <div class="list-group list-group-flush">
+                                        <a href="https://www.ted.com/talks/julian_treasure_how_to_speak_so_that_people_want_to_listen" class="list-group-item list-group-item-action" target="_blank">
+                                            "How to Speak So People Want to Listen" - Julian Treasure
+                                        </a>
+                                        <a href="https://www.ted.com/talks/amy_cuddy_your_body_language_may_shape_who_you_are" class="list-group-item list-group-item-action" target="_blank">
+                                            "Your Body Language Shapes Who You Are" - Amy Cuddy
+                                        </a>
+                                        <a href="https://www.ted.com/talks/simon_sinek_how_great_leaders_inspire_action" class="list-group-item list-group-item-action" target="_blank">
+                                            "How Great Leaders Inspire Action" - Simon Sinek
+                                        </a>
+                                        <a href="https://www.ted.com/talks/nancy_duarte_the_secret_structure_of_great_talks" class="list-group-item list-group-item-action" target="_blank">
+                                            "The Secret Structure of Great Talks" - Nancy Duarte
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-12 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Speaking Tips">
+                                <div class="card-body">
+                                    <h3 class="h5">Speaking Tips</h3>
+                                    <div class="accordion" id="tipsAccordion">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingPreparation">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePreparation">
+                                                    Preparation
+                                                </button>
+                                            </h2>
+                                            <div id="collapsePreparation" class="accordion-collapse collapse show" data-bs-parent="#tipsAccordion">
+                                                <div class="accordion-body">
+                                                    <ul>
+                                                        <li>Know your audience and tailor your message</li>
+                                                        <li>Practice multiple times, including out loud</li>
+                                                        <li>Time your speech and leave room for pauses</li>
+                                                        <li>Prepare notes or an outline, not a script</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingDelivery">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDelivery">
+                                                    Delivery
+                                                </button>
+                                            </h2>
+                                            <div id="collapseDelivery" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                                                <div class="accordion-body">
+                                                    <ul>
+                                                        <li>Make eye contact with different audience members</li>
+                                                        <li>Use purposeful gestures and movement</li>
+                                                        <li>Vary your vocal tone, pace, and volume</li>
+                                                        <li>Pause for emphasis and to collect your thoughts</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="headingContent">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContent">
+                                                    Content
+                                                </button>
+                                            </h2>
+                                            <div id="collapseContent" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                                                <div class="accordion-body">
+                                                    <ul>
+                                                        <li>Start with a strong opening to grab attention</li>
+                                                        <li>Organize with clear structure and transitions</li>
+                                                        <li>Use stories and examples to illustrate points</li>
+                                                        <li>End with a memorable conclusion</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="container my-5">
-        <h2 class="text-center">Recommended Resources</h2>
-        <ul>
-            <li><strong>Book:</strong> “Talk Like TED” by Carmine Gallo</li>
-            <li><strong>Video:</strong> “How to Speak so People Want to Listen” by Julian Treasure (TED Talk)</li>
-            <li><strong>Book:</strong> “The Art of Public Speaking” by Dale Carnegie</li>
-        </ul>
+    <section>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="text-center mb-4">Club-Specific Resources</h2>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="h5">Meeting Role Guides</h3>
+                                    <p>Download our club's guides for each meeting role with tips and best practices.</p>
+                                    <div class="list-group list-group-flush">
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-pdf me-2 text-danger"></i>Toastmaster of the Day Guide
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-pdf me-2 text-danger"></i>Evaluator's Guide
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-pdf me-2 text-danger"></i>Table Topics Master Guide
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-pdf me-2 text-danger"></i>Functionary Roles Guide
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="h5">Pathways Support</h3>
+                                    <p>Resources to help you navigate the Pathways learning experience.</p>
+                                    <div class="list-group list-group-flush">
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-word me-2 text-primary"></i>Pathways Overview
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-excel me-2 text-success"></i>Project Tracking Sheet
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-powerpoint me-2 text-warning"></i>Pathways FAQ
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-link me-2 text-info"></i>Base Camp Navigation Guide
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="h5">Speech Preparation</h3>
+                                    <p>Templates and tools to help you prepare outstanding speeches.</p>
+                                    <div class="list-group list-group-flush">
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-alt me-2"></i>Speech Outline Template
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-audio me-2 text-primary"></i>Speech Evaluation Form
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-video me-2 text-danger"></i>Video Recording Tips
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-image me-2 text-success"></i>Visual Aid Guidelines
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="h5">Leadership Resources</h3>
+                                    <p>Materials for club officers and members taking on leadership roles.</p>
+                                    <div class="list-group list-group-flush">
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-file-contract me-2"></i>Club Officer Handbook
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-calendar-alt me-2 text-info"></i>Meeting Planner Template
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-chart-line me-2 text-success"></i>Club Success Plan
+                                        </a>
+                                        <a href="#" class="list-group-item list-group-item-action">
+                                            <i class="fas fa-trophy me-2 text-warning"></i>DCP Explanation
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <footer class="text-white text-center py-3">
-        <p>&copy; [CURRENT_YEAR] [CLUB_NAME] Toastmasters. All rights reserved.</p>
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="text-white mb-4">Need Help With Your Toastmasters Journey?</h2>
+                    <p class="lead text-white mb-5">Our club mentors and officers are here to support you. Reach out with any questions!</p>
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a href="contact.html" class="btn btn-primary btn-lg px-4 gap-3">
+                            <i class="fas fa-envelope me-2"></i>Contact Us
+                        </a>
+                        <a href="meetings.html" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-calendar-alt me-2"></i>Attend a Meeting
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><i class="fas fa-comments me-2"></i>[CLUB_NAME] Toastmasters</h5>
+                    <p>Empowering confident communicators and leaders since [FOUNDING_YEAR].</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="meetings.html" class="text-white">Meeting Schedule</a></li>
+                        <li><a href="membership.html" class="text-white">How to Join</a></li>
+                        <li><a href="resources.html" class="text-white">Member Resources</a></li>
+                        <li><a href="leadership.html" class="text-white">Club Leadership</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="mb-3">
+                        <a href="https://facebook.com" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="https://linkedin.com" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://meetup.com" class="social-icon"><i class="fab fa-meetup"></i></a>
+                    </div>
+                    <p>
+                        <i class="fas fa-envelope me-2"></i>info@clubname.org<br>
+                        <i class="fas fa-map-marker-alt me-2"></i>[LOCATION]
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; [CURRENT_YEAR] [CLUB_NAME] Toastmasters. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">
+                        <a href="https://www.toastmasters.org" class="text-white">Toastmasters International</a> | 
+                        <a href="privacy.html" class="text-white">Privacy Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
