@@ -1,41 +1,54 @@
 :root {
     --maroon: #772432;
     --blue: #004165;
+    --light-blue: #E6F0F5;
     --gray: #A9B2B1;
+    --light-gray: #F5F5F5;
     --yellow: #F2DF74;
     --white: #FFFFFF;
-    --black: #000000;
+    --black: #333333;
 }
 
 body {
     font-family: 'Source Sans 3', Arial, sans-serif;
     color: var(--black);
     background-color: var(--white);
+    line-height: 1.6;
 }
 
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', sans-serif;
     color: var(--blue);
+    margin-bottom: 1rem;
 }
 
 header {
-    background: linear-gradient(45deg, var(--blue), var(--maroon));
+    background: linear-gradient(rgba(0, 65, 101, 0.8), rgba(119, 36, 50, 0.8)), 
+                url('https://images.unsplash.com/photo-1431540015161-0bf868a2d407?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
     color: var(--white);
+    padding: 6rem 0;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
 }
 
 .navbar {
     background-color: var(--white);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .navbar-brand {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    color: var(--maroon);
+    color: var(--maroon) !important;
+    font-size: 1.5rem;
 }
 
 .nav-link {
     font-family: 'Source Sans 3', Arial, sans-serif;
     color: var(--black);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -46,67 +59,159 @@ header {
     background-color: var(--blue);
     border-color: var(--blue);
     font-family: 'Source Sans 3', Arial, sans-serif;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
     background-color: var(--maroon);
     border-color: var(--maroon);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .btn-outline-light {
     border-color: var(--white);
     color: var(--white);
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .btn-outline-light:hover {
     background-color: var(--yellow);
+    border-color: var(--yellow);
     color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 section {
-    min-height: 400px;
-    padding: 20px 0;
+    padding: 4rem 0;
+}
+
+.section-light {
+    background-color: var(--light-gray);
+}
+
+.section-blue {
+    background-color: var(--light-blue);
 }
 
 footer {
     background-color: var(--blue);
     color: var(--white);
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    padding: 2rem 0;
 }
 
 .card {
-    border-color: var(--gray);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .card-title {
     font-family: 'Montserrat', sans-serif;
     color: var(--blue);
+    font-weight: 700;
 }
 
 .card-text {
     color: var(--black);
 }
 
-a {
-    color: var(--blue);
+.testimonial-card {
+    border-left: 4px solid var(--maroon);
 }
 
-a:hover {
+.testimonial-text {
+    font-style: italic;
+}
+
+.testimonial-author {
+    font-weight: 600;
     color: var(--maroon);
 }
 
-.list-group-item {
-    border-color: var(--gray);
+.role-card {
+    border-top: 4px solid var(--blue);
 }
 
-.accordion-button {
-    font-family: 'Source Sans 3', Arial, sans-serif;
-    color: var(--blue);
+.meeting-card {
+    border-top: 4px solid var(--maroon);
+}
+
+.event-card {
+    border-top: 4px solid var(--yellow);
 }
 
 .accordion-button:not(.collapsed) {
-    background-color: var(--yellow);
-    color: var(--black);
+    background-color: var(--light-blue);
+    color: var(--blue);
+}
+
+.role-icon {
+    font-size: 2rem;
+    color: var(--blue);
+    margin-bottom: 1rem;
+}
+
+.cta-section {
+    background: linear-gradient(rgba(0, 65, 101, 0.9), rgba(0, 65, 101, 0.9)), 
+                url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.social-icon {
+    font-size: 1.5rem;
+    color: var(--white);
+    margin: 0 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: var(--yellow);
+}
+
+.meeting-time-badge {
+    background-color: var(--maroon);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header {
+        padding: 4rem 0;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    section {
+        padding: 2rem 0;
+    }
 }
