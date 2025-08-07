@@ -1,56 +1,22 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[CLUB_NAME] Toastmasters - Leadership</title>
+    <title>Club Leadership - [CLUB_NAME] Toastmasters</title>
+    <meta name="description" content="Meet the leadership team of [CLUB_NAME] Toastmasters and learn about club officer roles and responsibilities.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">[CLUB_NAME] Toastmasters</a>
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-comments me-2"></i>[CLUB_NAME] Toastmasters
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -64,33 +30,408 @@
                     <li class="nav-item"><a class="nav-link" href="resources.html">Resources</a></li>
                     <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
                     <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="gallery.html">Gallery</a></li>
-                    <li class="nav-item"><a class="nav-link" href="guest.html">Guest Info</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section class="container my-5">
-        <h2 class="text-center">Club Officers</h2>
-        <ul class="list-group">
-            <li class="list-group-item"><strong>President:</strong> [PRESIDENT_NAME] ([PRESIDENT_EMAIL])</li>
-            <li class="list-group-item"><strong>VP Education:</strong> [VPE_NAME] ([VPE_EMAIL])</li>
-            <li class="list-group-item"><strong>VP Membership:</strong> [VPM_NAME] ([VPM_EMAIL])</li>
-            <li class="list-group-item"><strong>VP Public Relations:</strong> [VPPR_NAME] ([VPPR_EMAIL])</li>
-            <li class="list-group-item"><strong>Secretary:</strong> [SECRETARY_NAME] ([SECRETARY_EMAIL])</li>
-            <li class="list-group-item"><strong>Treasurer:</strong> [TREASURER_NAME] ([TREASURER_EMAIL])</li>
-            <li class="list-group-item"><strong>Sergeant at Arms:</strong> [SAA_NAME] ([SAA_EMAIL])</li>
-        </ul>
+    <header class="text-white text-center" style="background-image: linear-gradient(rgba(0, 65, 101, 0.8), rgba(119, 36, 50, 0.8)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">Club Leadership</h1>
+            <p class="lead mb-5">Meet the team guiding our club's success and learn about leadership opportunities</p>
+        </div>
+    </header>
+
+    <section class="section-light">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h2 class="text-center mb-5">2023-2024 Club Officers</h2>
+                    
+                    <div class="row g-4">
+                        <!-- President -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="President">
+                                <div class="card-body text-center">
+                                    <h3 class="h5 card-title">President</h3>
+                                    <h4 class="h6 text-muted">[PRESIDENT_NAME]</h4>
+                                    <p class="card-text">Leads the club and ensures meetings run smoothly. The primary contact with Toastmasters International.</p>
+                                    <a href="mailto:[PRESIDENT_EMAIL]" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-envelope me-1"></i> Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- VP Education -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="VP Education">
+                                <div class="card-body text-center">
+                                    <h3 class="h5 card-title">VP Education</h3>
+                                    <h4 class="h6 text-muted">[VPE_NAME]</h4>
+                                    <p class="card-text">Manages the educational program, tracks member progress, and helps members complete projects.</p>
+                                    <a href="mailto:[VPE_EMAIL]" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-envelope me-1"></i> Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- VP Membership -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="VP Membership">
+                                <div class="card-body text-center">
+                                    <h3 class="h5 card-title">VP Membership</h3>
+                                    <h4 class="h6 text-muted">[VPM_NAME]</h4>
+                                    <p class="card-text">Welcomes guests, processes new members, and implements membership-building activities.</p>
+                                    <a href="mailto:[VPM_EMAIL]" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-envelope me-1"></i> Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- VP Public Relations -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="VP Public Relations">
+                                <div class="card-body text-center">
+                                    <h3 class="h5 card-title">VP Public Relations</h3>
+                                    <h4 class="h6 text-muted">[VPPR_NAME]</h4>
+                                    <p class="card-text">Promotes the club through social media, newsletters, and community outreach.</p>
+                                    <a href="mailto:[VPPR_EMAIL]" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-envelope me-1"></i> Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Secretary -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Secretary">
+                                <div class="card-body text-center">
+                                    <h3 class="h5 card-title">Secretary</h3>
+                                    <h4 class="h6 text-muted">[SECRETARY_NAME]</h4>
+                                    <p class="card-text">Maintains club records, handles correspondence, and takes meeting minutes.</p>
+                                    <a href="mailto:[SECRETARY_EMAIL]" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-envelope me-1"></i> Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Treasurer -->
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Treasurer">
+                                <div class="card-body text-center">
+                                    <h3 class="h5 card-title">Treasurer</h3>
+                                    <h4 class="h6 text-muted">[TREASURER_NAME]</h4>
+                                    <p class="card-text">Manages club finances, collects dues, and submits payments to Toastmasters International.</p>
+                                    <a href="mailto:[TREASURER_EMAIL]" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-envelope me-1"></i> Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sergeant at Arms -->
+                        <div class="col-md-6 col-lg-4 mx-auto">
+                            <div class="card h-100">
+                                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="card-img-top" alt="Sergeant at Arms">
+                                <div class="card-body text-center">
+                                    <h3 class="h5 card-title">Sergeant at Arms</h3>
+                                    <h4 class="h6 text-muted">[SAA_NAME]</h4>
+                                    <p class="card-text">Maintains meeting space, greets guests, and handles meeting logistics and equipment.</p>
+                                    <a href="mailto:[SAA_EMAIL]" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-envelope me-1"></i> Email
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section class="container my-5">
-        <h2 class="text-center">Roles & Responsibilities</h2>
-        <p>Our officers lead the club, ensuring smooth operations and member growth. For example, the President oversees meetings, the VP Education manages Pathways, and the VP Membership welcomes guests. Learn more at <a href="https://www.toastmasters.org/leadership-central/club-officer-tools">toastmasters.org</a>.</p>
+    <section class="section-blue">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h2 class="text-center mb-5">Leadership Development Opportunities</h2>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="role-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <h3 class="h5">Club Officer Roles</h3>
+                                    <p>Develop leadership skills by serving as a club officer. Elections are held annually.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="role-icon">
+                                        <i class="fas fa-microphone"></i>
+                                    </div>
+                                    <h3 class="h5">Meeting Roles</h3>
+                                    <p>Practice leadership through roles like Toastmaster, General Evaluator, and Table Topics Master.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="role-icon">
+                                        <i class="fas fa-trophy"></i>
+                                    </div>
+                                    <h3 class="h5">District Leadership</h3>
+                                    <p>Expand your impact by serving at the Area, Division, or District level.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-3">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <div class="role-icon">
+                                        <i class="fas fa-graduation-cap"></i>
+                                    </div>
+                                    <h3 class="h5">Pathways Projects</h3>
+                                    <p>Complete leadership projects in your Pathways learning path to build specific skills.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-5">
+                        <a href="https://www.toastmasters.org/leadership-central/club-officer-tools" class="btn btn-primary" target="_blank">
+                            <i class="fas fa-external-link-alt me-2"></i>Toastmasters Leadership Resources
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <footer class="text-white text-center py-3">
-        <p>&copy; [CURRENT_YEAR] [CLUB_NAME] Toastmasters. All rights reserved.</p>
+    <section>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="text-center mb-4">Club Officer Responsibilities</h2>
+                    
+                    <div class="accordion" id="officerAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingPresident">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePresident">
+                                    President
+                                </button>
+                            </h2>
+                            <div id="collapsePresident" class="accordion-collapse collapse show" data-bs-parent="#officerAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Presides at club meetings and executive committee meetings</li>
+                                        <li>Represents the club at area, division, and district events</li>
+                                        <li>Ensures the club meets Toastmasters International quality standards</li>
+                                        <li>Appoints committee chairs and assists with their responsibilities</li>
+                                        <li>Works with club officers to set and achieve club goals</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingVPE">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVPE">
+                                    Vice President Education
+                                </button>
+                            </h2>
+                            <div id="collapseVPE" class="accordion-collapse collapse" data-bs-parent="#officerAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Plans club meetings and assigns meeting roles</li>
+                                        <li>Helps members complete projects and tracks their progress</li>
+                                        <li>Orders and distributes educational materials</li>
+                                        <li>Coordinates speech contests and special meetings</li>
+                                        <li>Mentors new members and helps them get started</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingVPM">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVPM">
+                                    Vice President Membership
+                                </button>
+                            </h2>
+                            <div id="collapseVPM" class="accordion-collapse collapse" data-bs-parent="#officerAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Conducts membership-building programs</li>
+                                        <li>Greets guests and helps them feel welcome</li>
+                                        <li>Processes membership applications</li>
+                                        <li>Maintains accurate membership records</li>
+                                        <li>Works with VP Public Relations to promote the club</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingVPPR">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVPPR">
+                                    Vice President Public Relations
+                                </button>
+                            </h2>
+                            <div id="collapseVPPR" class="accordion-collapse collapse" data-bs-parent="#officerAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Promotes the club through social media and other channels</li>
+                                        <li>Creates and distributes club newsletters</li>
+                                        <li>Maintains the club website and online presence</li>
+                                        <li>Seeks publicity opportunities in local media</li>
+                                        <li>Coordinates open houses and special events</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSecretary">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSecretary">
+                                    Secretary
+                                </button>
+                            </h2>
+                            <div id="collapseSecretary" class="accordion-collapse collapse" data-bs-parent="#officerAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Records and distributes meeting minutes</li>
+                                        <li>Maintains club records and historical documents</li>
+                                        <li>Handles club correspondence</li>
+                                        <li>Updates the club constitution and bylaws as needed</li>
+                                        <li>Submits officer lists to Toastmasters International</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingTreasurer">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTreasurer">
+                                    Treasurer
+                                </button>
+                            </h2>
+                            <div id="collapseTreasurer" class="accordion-collapse collapse" data-bs-parent="#officerAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Manages club bank accounts and financial records</li>
+                                        <li>Collects membership dues and other payments</li>
+                                        <li>Prepares financial reports for club meetings</li>
+                                        <li>Submits payments to Toastmasters International</li>
+                                        <li>Prepares an annual budget for the club</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingSAA">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSAA">
+                                    Sergeant at Arms
+                                </button>
+                            </h2>
+                            <div id="collapseSAA" class="accordion-collapse collapse" data-bs-parent="#officerAccordion">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Arranges the meeting room and equipment</li>
+                                        <li>Greets members and guests at meetings</li>
+                                        <li>Maintains club property and supplies</li>
+                                        <li>Manages meeting logistics and timing</li>
+                                        <li>Assists with special events and contests</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="text-white mb-4">Interested in Leadership?</h2>
+                    <p class="lead text-white mb-5">Club officer elections happen every year, but you can start developing leadership skills today by taking meeting roles.</p>
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+                        <a href="membership.html" class="btn btn-primary btn-lg px-4 gap-3">
+                            <i class="fas fa-user-plus me-2"></i>Sign Up for a Role
+                        </a>
+                        <a href="contact.html" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-envelope me-2"></i>Contact Our Leaders
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5><i class="fas fa-comments me-2"></i>[CLUB_NAME] Toastmasters</h5>
+                    <p>Empowering confident communicators and leaders since [FOUNDING_YEAR].</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="meetings.html" class="text-white">Meeting Schedule</a></li>
+                        <li><a href="membership.html" class="text-white">How to Join</a></li>
+                        <li><a href="resources.html" class="text-white">Member Resources</a></li>
+                        <li><a href="leadership.html" class="text-white">Club Leadership</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Connect With Us</h5>
+                    <div class="mb-3">
+                        <a href="https://facebook.com" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="https://linkedin.com" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://meetup.com" class="social-icon"><i class="fab fa-meetup"></i></a>
+                    </div>
+                    <p>
+                        <i class="fas fa-envelope me-2"></i>info@clubname.org<br>
+                        <i class="fas fa-map-marker-alt me-2"></i>[LOCATION]
+                    </p>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; [CURRENT_YEAR] [CLUB_NAME] Toastmasters. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">
+                        <a href="https://www.toastmasters.org" class="text-white">Toastmasters International</a> | 
+                        <a href="privacy.html" class="text-white">Privacy Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
